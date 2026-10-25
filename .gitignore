@@ -1,0 +1,26 @@
+.env
+.env.*
+!.env.example
+db.sqlite3
+staticfiles/
+__pycache__/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Flutter
+app/.dart_tool/
+app/build/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/android/local.properties
+app/android/.gradle/
+
+# Locales
+_to_delete/
+*.log
+.idea/
+*.iml
+.DS_Store
+laia-github/

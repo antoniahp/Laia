@@ -1,0 +1,86 @@
+# Blueprint de Render: crea el backend de Laia (Django Ninja) y su base de datos Postgres de una vez.
+# En Render: New → Blueprint → elige este repositorio.
+# Los valores con "sync: false" te los pedirá Render al crear el Blueprint.
+
+services:
+  - type: web
+    name: laia-backend
+    runtime: python
+    rootDir: backend
+    plan: free # Cámbialo en el panel: mínimo el de 512 MB (7 $/mes) para que no se duerma
+    buildCommand: pip install "poetry>=2.0,<3.0" && poetry install --only main --no-root && python manage.py collectstatic --noinput
+    startCommand: sh start.sh
+    healthCheckPath: /api/docs
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: DATABASE_URL
+        fromDatabase:
+          name: laia-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: TELEGRAM_WEBHOOK_SECRET
+        generateValue: true
+
+      # Panel /admin de Django
+      - key: DJANGO_ADMIN_USER
+        sync: false
+      - key: DJANGO_ADMIN_PASSWORD
+        sync: false
+
+      # Cerebro: Gemma 4 en Ollama Cloud (Render no tiene GPU)
+      - key: OLLAMA_HOST
+        value: https://ollama.com
+      - key: OLLAMA_MODEL
+        value: gemma4:31b
+      - key: OLLAMA_API_KEY
+        sync: false
+
+      # Oído: "elevenlabs" cabe en 512 MB. Para Whisper (open source) usa el plan de 2 GB y pon "whisper".
+      - key: STT_PROVIDER
+        value: elevenlabs
+      - key: WHISPER_MODEL
+        value: base
+
+      # Cuentas y límites
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: SIGNUP_CODE
+        sync: false
+      - key: MAX_CALLS_PER_DAY
+        value: "5"
+      - key: ALLOWED_COUNTRIES
+        value: ES,DE,FR,IT,PT,GB,IE,NL,BE,AT
+
+      # Twilio
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_FROM_NUMBER
+        sync: false
+      - key: ENABLE_AMD
+        value: "true"
+
+      # ElevenLabs
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
+        sync: false
+      - key: ELEVENLABS_MODEL
+        value: eleven_flash_v2_5
+
+      # Telegram y Google (opcionales, pero muy recomendados)
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+
+databases:
+  - name: laia-db
+    plan: free # Caduca a los 30 días: súbelo al plan de pago más pequeño antes
+    databaseName: laia
+    user: laia
