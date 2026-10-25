@@ -42,6 +42,36 @@ from domain.rules.languages import LANGUAGES, language_name
 
 logger = logging.getLogger(__name__)
 
+ENGLISH_WORDS = {
+    "the",
+    "you",
+    "can",
+    "please",
+    "okay",
+    "ok",
+    "is",
+    "it",
+    "will",
+    "be",
+    "yes",
+    "have",
+    "what",
+    "and",
+    "for",
+    "thank",
+    "speak",
+    "english",
+    "sorry",
+    "hello",
+}
+
+
+def sounds_english(text):
+    """¿El negocio nos está hablando en inglés? (para avisos como «un momento» en su idioma)"""
+    words = [w.strip(".,!?¿¡\"'").lower() for w in text.split()]
+    return sum(w in ENGLISH_WORDS for w in words) >= 2
+
+
 HOLD_PHRASES = {
     "es": "Un momento, por favor, lo consulto enseguida.",
     "en": "One moment please, let me check that quickly.",
@@ -96,7 +126,8 @@ TU MISIÓN: {task}
 - Notas: {order.notes or "ninguna"}
 - Nombre para el pedido: {customer.name or "no indicado"}
 - Dirección de entrega: {address or "no indicada"}
-- Teléfono de contacto: {spoken_phone(customer.phone) or "no indicado"} (díctalo exactamente así, despacio, por grupos)
+- Teléfono de contacto: {spoken_phone(customer.phone) or "no indicado"} (díctalo despacio, por grupos; si la llamada
+  va en otro idioma, di cada cifra en ese idioma)
 
 CÓMO HABLAR (tiene que sonar como una persona normal llamando por teléfono):
 - Al empezar, saluda y di directamente lo que quieres, en UNA frase corta y natural, incluyendo que eres
@@ -197,7 +228,8 @@ def register_tools(llm, call):
     order = call.order
 
     async def hold(params):
-        await params.llm.push_frame(TTSSpeakFrame(HOLD_PHRASES.get(order.language, HOLD_PHRASES["en"])))
+        language = call.spoken_language or order.language
+        await params.llm.push_frame(TTSSpeakFrame(HOLD_PHRASES.get(language, HOLD_PHRASES["en"])))
 
     async def report_price(params):
         price = float(params.arguments.get("total_price", 0))
@@ -413,6 +445,8 @@ async def run_voice_agent(websocket, stream_id, call_id, call):
     async def on_business_said(_aggregator, _strategy, message):
         text = (message.content or "").strip()
         if text:
+            if order.language != "en" and sounds_english(text):
+                call.spoken_language = "en"  # el negocio ha pasado al inglés
             call.add_line("negocio", text)
             return
         # No se ha entendido lo que dijeron

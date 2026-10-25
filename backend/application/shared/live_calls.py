@@ -54,6 +54,7 @@ class LiveCall:
     ):
         self.order = order
         self.customer = customer
+        self.spoken_language = None  # si el negocio cambia de idioma durante la llamada
         self.telegram_chat_id = telegram_chat_id
         self._repositories = repositories
         self._messages = message_service
