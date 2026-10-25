@@ -33,6 +33,14 @@ class VoiceInput {
 
   VoidCallback? _onStopped;
 
+  /// Lo que dice el propio reconocedor del móvil (a veces se para sin avisar).
+  bool get reallyListening => _speech.isListening;
+
+  /// Si creíamos que escuchaba pero el móvil ya no, lo corrige.
+  void forgetIfStopped() {
+    if (listening && !_speech.isListening) listening = false;
+  }
+
   /// Empieza o para de escuchar. Devuelve un mensaje de error si no se puede usar el micrófono.
   Future<String?> toggle({required void Function(String text) onText, required VoidCallback onChange}) async {
     if (listening) {

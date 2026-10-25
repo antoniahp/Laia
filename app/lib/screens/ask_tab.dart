@@ -48,6 +48,8 @@ class _AskTabState extends State<AskTab> {
   bool _isAway = false; // en otra pantalla (revisar, llamada...)
   String _heardText = ''; // lo último que ha oído, para ver que funciona
   Timer? _restart;
+  Timer? _watchdog; // vuelve a escuchar si el móvil deja de hacerlo sin avisar
+  bool _talking = false; // Laia está hablando: no escuchar para no oírse a sí misma
 
   static List<String> get _examples => [
     t('Pide una pizza cuatro quesos en Tres Hermanas. Si no hay, una margarita. Máximo 20 euros.',
@@ -64,6 +66,13 @@ class _AskTabState extends State<AskTab> {
       if (!mounted) return;
       setState(() => _handsFree = on);
       _scheduleListen(const Duration(milliseconds: 600));
+    });
+    // Android a veces corta el micro sin avisar (errores del reconocedor, llamadas, el sistema...).
+    // Cada 3 s: si debería estar escuchando y no lo está, vuelve a empezar.
+    _watchdog = Timer.periodic(const Duration(seconds: 3), (_) {
+      if (!_canListenHandsFree || _talking) return;
+      _voice.forgetIfStopped();
+      if (!_voice.listening) _listenHandsFree();
     });
   }
 
@@ -83,6 +92,7 @@ class _AskTabState extends State<AskTab> {
 
   @override
   void dispose() {
+    _watchdog?.cancel();
     _restart?.cancel();
     _silence?.cancel();
     KeepScreenOn.set(false);
@@ -112,7 +122,8 @@ class _AskTabState extends State<AskTab> {
   String get _phrase => '$_said $_saying'.trim();
 
   Future<void> _listenHandsFree() async {
-    if (!_canListenHandsFree || _voice.listening) return;
+    _voice.forgetIfStopped();
+    if (!_canListenHandsFree || _talking || _voice.listening) return;
     _saying = '';
     final error = await _voice.listenOnce(
       onChange: _refresh,
@@ -176,8 +187,10 @@ class _AskTabState extends State<AskTab> {
   /// Laia contesta en voz alta sin oírse a sí misma.
   Future<void> _answerOutLoud(String text) async {
     _restart?.cancel();
+    _talking = true;
     await _voice.stop(_refresh);
     await Speaker.say(text);
+    _talking = false;
     _scheduleListen(const Duration(milliseconds: 100));
   }
 
