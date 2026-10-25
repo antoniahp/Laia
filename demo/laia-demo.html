@@ -1,0 +1,372 @@
+<title>Laia en acción</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: escenario a la izquierda (teléfono), "lo que pasa por detrás" a la derecha; apilado en móvil */
+:root{
+  --bg:#eef1f4; --panel:#ffffff; --ink:#151a21; --muted:#5b6573; --line:#d6dce3;
+  --accent:#e8590c; --accent-ink:#ffffff; --accent-soft:#fde3d3;
+  --phone:#0f1318; --screen:#fafbfc; --bubble:#eceff3; --laia:#fde3d3; --laia-ink:#4a1d05;
+  --open:#1f7a4d; --open-soft:#d9f0e4; --paid:#6b4bd1; --paid-soft:#e7e0fb; --rule:#a15c00; --rule-soft:#fbecd2;
+  --q:#fff4c2; --q-ink:#4a3b00; --ok:#1f7a4d;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1216; --panel:#161b21; --ink:#e8ecf0; --muted:#98a3b0; --line:#2a323b;
+  --accent:#ff7a33; --accent-ink:#1a0b02; --accent-soft:#3a1f10;
+  --phone:#000000; --screen:#12161b; --bubble:#232a32; --laia:#4a2410; --laia-ink:#ffe2cf;
+  --open:#5fd39a; --open-soft:#123224; --paid:#b29cff; --paid-soft:#271f45; --rule:#f0b45c; --rule-soft:#33260f;
+  --q:#3a3210; --q-ink:#ffeaa0; --ok:#5fd39a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1216; --panel:#161b21; --ink:#e8ecf0; --muted:#98a3b0; --line:#2a323b;
+  --accent:#ff7a33; --accent-ink:#1a0b02; --accent-soft:#3a1f10;
+  --phone:#000000; --screen:#12161b; --bubble:#232a32; --laia:#4a2410; --laia-ink:#ffe2cf;
+  --open:#5fd39a; --open-soft:#123224; --paid:#b29cff; --paid-soft:#271f45; --rule:#f0b45c; --rule-soft:#33260f;
+  --q:#3a3210; --q-ink:#ffeaa0; --ok:#5fd39a; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;gap:24px}
+header h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0;letter-spacing:-.02em;text-wrap:balance}
+header h1 span{color:var(--accent)}
+header p{margin:8px 0 0;color:var(--muted);max-width:62ch}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{border:0;background:transparent;color:var(--muted);font:600 14px var(--f-body);padding:8px 14px;border-radius:999px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 14px var(--f-body);padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.counter{font:500 13px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+
+.stage{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:minmax(0,1fr)}}
+
+/* Teléfono */
+.phone{background:var(--phone);border-radius:44px;padding:12px;max-width:380px;width:100%;margin:0 auto;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+.screen{background:var(--screen);border-radius:34px;height:700px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+@media (max-width:420px){.screen{height:640px}}
+.statusbar{display:flex;justify-content:space-between;padding:12px 24px 4px;font:600 12px var(--f-body);color:var(--ink)}
+.appbar{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px}
+.appbar b{font-family:var(--f-display);font-weight:800;font-size:22px}
+.appbar small{color:var(--muted);font-size:12px}
+.body{flex:1;overflow-y:auto;padding:4px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;background:var(--panel)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-weight:600}
+.mic{width:116px;height:116px;border-radius:50%;margin:22px auto 4px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);transition:transform .3s, box-shadow .3s}
+.mic.live{background:#d93025;color:#fff;transform:scale(1.08);box-shadow:0 0 0 14px rgba(217,48,37,.15),0 0 0 28px rgba(217,48,37,.07)}
+.hint{text-align:center;color:var(--muted);font-size:13px}
+.field{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel);min-height:44px}
+.field small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.field .v{font-size:14px}
+.cta{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:13px;text-align:center;font-weight:700}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.caret{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.callhead{display:flex;gap:12px;align-items:center}
+.callhead .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}
+.callhead .ic.ok{background:var(--open-soft);color:var(--ok)}
+.callhead h3{margin:0;font:700 19px var(--f-display)}
+.callhead p{margin:0;color:var(--muted);font-size:13px}
+.events{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.events div::before{content:"•";margin-right:6px;color:var(--accent)}
+.bubbles{display:flex;flex-direction:column;gap:6px}
+.b{max-width:84%;padding:8px 12px;border-radius:16px;font-size:13.5px;background:var(--bubble);animation:pop .3s ease}
+.b.laia{align-self:flex-end;background:var(--laia);color:var(--laia-ink);border-bottom-right-radius:4px}
+.b.neg{border-bottom-left-radius:4px}
+.b em{display:block;font-style:normal;font-size:11px;font-weight:600;opacity:.7}
+.b .tr{display:block;font-size:12px;opacity:.75;margin-top:3px;border-top:1px dashed currentColor;padding-top:3px}
+.qcard{background:var(--q);color:var(--q-ink);border-radius:16px;padding:14px;display:grid;gap:10px;animation:pop .3s ease}
+.qcard b{font-size:15px}
+.qrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qrow button{border:0;border-radius:10px;padding:10px;font:700 14px var(--f-body);cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.qrow button.no{background:transparent;border:1px solid currentColor;color:inherit}
+.result{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--panel)}
+.result b{display:block;font:700 16px var(--f-display)}
+.result span{display:block;color:var(--muted);font-size:13px}
+.toast{position:absolute;left:12px;right:12px;top:40px;background:var(--ink);color:var(--bg);border-radius:16px;padding:10px 14px;font-size:13px;display:flex;gap:10px;align-items:center;animation:drop .4s ease}
+.toast i{font-style:normal;font-weight:700}
+@keyframes pop{from{transform:translateY(6px);opacity:.2}to{transform:none;opacity:1}}
+@keyframes drop{from{transform:translateY(-20px);opacity:0}to{transform:none;opacity:1}}
+
+/* Lado derecho */
+.side{display:grid;gap:16px;min-width:0}
+.now{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:12px}
+.now h2{margin:0;font:700 22px/1.2 var(--f-display);text-wrap:balance}
+.now p{margin:0;color:var(--muted);max-width:60ch}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font:500 12px var(--f-mono);padding:4px 9px;border-radius:999px}
+.tag.open{background:var(--open-soft);color:var(--open)}
+.tag.paid{background:var(--paid-soft);color:var(--paid)}
+.tag.rule{background:var(--rule-soft);color:var(--rule)}
+pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:13px/1.55 var(--f-mono);overflow-x:auto;color:var(--ink)}
+.pipeline{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 20px}
+.pipeline h3{margin:0 0 10px;font:700 15px var(--f-display)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.node{padding:6px 10px;border-radius:10px;border:1px solid var(--line);color:var(--muted);transition:all .25s}
+.node.hot{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:600}
+.arrow{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:22px;height:5px;border-radius:3px;background:var(--line)}
+.dots i.on{background:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Oye Laia, <span>pídeme la cena.</span></h1>
+    <p>Simulación del flujo completo: hablas al móvil, Laia entiende tu orden con un modelo open-weight, llama al negocio, aplica tus reglas y te pregunta solo cuando hace falta. Elige un caso y avanza paso a paso.</p>
+  </header>
+
+  <div class="controls">
+    <div class="tabs" role="group" aria-label="Escenario">
+      <button id="tab-pizza" aria-pressed="true" data-s="pizza">Pizzería en España</button>
+      <button id="tab-de" aria-pressed="false" data-s="de">Tienda en Alemania</button>
+    </div>
+    <button class="btn" id="prev">← Anterior</button>
+    <button class="btn primary" id="next">Siguiente →</button>
+    <button class="btn" id="play">▶ Reproducir</button>
+    <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="stage">
+    <div class="phone" aria-label="Pantalla de la app Laia">
+      <div class="screen" id="screen"></div>
+    </div>
+
+    <div class="side">
+      <div class="dots" id="dots"></div>
+      <section class="now" aria-live="polite">
+        <div class="tags" id="tags"></div>
+        <h2 id="now-title"></h2>
+        <p id="now-text"></p>
+        <pre id="now-code" hidden></pre>
+      </section>
+      <section class="pipeline">
+        <h3>Por dónde pasa cada paso</h3>
+        <div class="flow" id="flow"></div>
+        <div class="legend">
+          <span style="--c:var(--open)">Open source / open-weight</span>
+          <span style="--c:var(--paid)">Servicio de partner</span>
+          <span style="--c:var(--rule)">Tus reglas, en código</span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+const NODES = [
+  ["app","App Flutter"],["gemma","Gemma (Ollama)"],["twilio","Twilio"],
+  ["whisper","Whisper"],["rules","Reglas"],["eleven","ElevenLabs"]
+];
+
+const ICON = {
+  mic:'<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>',
+  stop:'<svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+  ring:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>',
+  check:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  bell:'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 0 0-5-5.9V4a1 1 0 0 0-2 0v1.1A6 6 0 0 0 6 11v5l-2 2v1h16v-1z"/></svg>'
+};
+
+const SCEN = {
+  pizza: {
+    places:["Tres Hermanas","Sushi Kenji","Radhaus Müller 🇩🇪"],
+    place:"Tres Hermanas",
+    command:"Pide una pizza cuatro quesos en Tres Hermanas. Si no hay, una margarita. Máximo 20 euros.",
+    steps:[
+      {screen:"home", nodes:["app"], tags:[["open","app"]],
+       title:"Abres Laia", text:"Tus sitios guardados aparecen arriba. Un botón grande de micrófono: no hay menús que navegar."},
+      {screen:"listen", typed:true, nodes:["app"], tags:[["open","reconocimiento de voz del móvil"]],
+       title:"«Oye Laia, pide una pizza…»", text:"El móvil transcribe tu voz. Al oír «Tres Hermanas», la app selecciona sola ese sitio."},
+      {screen:"review", nodes:["app","gemma"], tags:[["open","Gemma · open-weight"]],
+       title:"Gemma convierte tu frase en un pedido", text:"El modelo open-weight saca el producto, la alternativa y el límite de precio. Tú revisas antes de que llame, como cuando Alexa confirma una compra.",
+       code:`{
+  "mode": "pedido",
+  "items": ["pizza cuatro quesos"],
+  "alternatives": ["margarita"],
+  "max_price": 20,
+  "ask_before_alternative": false
+}`},
+      {screen:"call", status:"ringing", nodes:["twilio"], tags:[["paid","Twilio"]],
+       events:["Llamando a Tres Hermanas...","Sonando..."],
+       title:"Laia llama desde la nube", text:"Android no deja que una app hable dentro de una llamada, así que el servidor hace la llamada con Twilio. Tú solo ves el estado."},
+      {screen:"call", status:"talk", nodes:["whisper","gemma","eleven"], tags:[["open","Whisper"],["open","Gemma"],["paid","ElevenLabs"]],
+       events:["Tres Hermanas ha contestado."],
+       add:[["neg","Pizzería Tres Hermanas, ¿dígame?"],["laia","Hola, soy Laia, una asistente de inteligencia artificial. Llamo de parte de Marta para pedir una pizza cuatro quesos a domicilio."]],
+       title:"Se presenta y pide", text:"Whisper escucha al negocio, Gemma decide qué decir y ElevenLabs le pone voz natural. Avisa de que es una IA: genera confianza y lo pide la ley europea."},
+      {screen:"call", status:"talk", nodes:["whisper","gemma","rules"], tags:[["open","Gemma → item_unavailable()"],["rule","regla: alternativa 1"]],
+       events:["No tienen: pizza cuatro quesos.","Laia pide la alternativa: margarita."],
+       add:[["neg","Uy, hoy no nos queda cuatro quesos."],["laia","Vaya. Entonces una margarita, por favor."]],
+       title:"No hay cuatro quesos: actúa sola", text:"Gemma llama a la herramienta item_unavailable. El código mira tus reglas y le devuelve «pide margarita». Laia no improvisa: sigue lo que tú dijiste.",
+       code:`item_unavailable("pizza cuatro quesos")
+→ { "instruction": "Pide esta alternativa: margarita." }`},
+      {screen:"call", status:"talk", nodes:["whisper","gemma","rules","eleven"], tags:[["open","Gemma → report_price()"],["rule","11,50 ≤ 20 €"]],
+       events:["El negocio dice que cuesta 11.5 EUR."],
+       add:[["neg","Muy bien, son once cincuenta con el envío."],["laia","Perfecto. La dirección es calle Mayor 12, tercero B. Pagamos al repartidor."]],
+       title:"Comprueba el precio antes de aceptar", text:"El precio lo valida el código, no el modelo. Si hubieran dicho 24 €, Laia habría rechazado el pedido con educación.",
+       code:`report_price(11.5, "EUR")
+→ { "accept": true }   // máximo: 20 €`},
+      {screen:"call", status:"talk", nodes:["gemma","twilio"], tags:[["open","Gemma → order_confirmed()"],["paid","Twilio cuelga"]],
+       events:["¡Pedido hecho! Una pizza margarita a domicilio.","Laia ha colgado."],
+       add:[["neg","Apuntado. En unos treinta minutos la tenéis."],["laia","¡Muchas gracias! Hasta luego."]],
+       title:"Confirma, se despide y cuelga", text:"Laia guarda el resumen, el total y el tiempo de entrega, y termina la llamada."},
+      {screen:"done", nodes:["app"], tags:[["open","app"]], toast:"Laia · Tu margarita llega en ~30 min",
+       result:["Una pizza margarita","Total: 11,50 € · pagas al repartidor","Llega en unos 30 minutos"],
+       title:"Tú no has movido un dedo", text:"Te llega una notificación con el resultado. La conversación completa queda guardada por si quieres revisarla."}
+    ]
+  },
+  de: {
+    places:["Tres Hermanas","Radhaus Müller 🇩🇪","Sushi Kenji"],
+    place:"Radhaus Müller 🇩🇪",
+    command:"Llama a Radhaus Müller y pide un cambio trasero Shimano XT con envío a España. Pregúntame antes de cambiar. Máximo 80 euros.",
+    steps:[
+      {screen:"home", nodes:["app"], tags:[["open","app"]],
+       title:"Una tienda de bicis en Múnich", text:"La pieza cuesta mucho menos allí, pero no hablas alemán. Antes no lo comprabas. Ahora se lo pides a Laia."},
+      {screen:"listen", typed:true, nodes:["app"], tags:[["open","reconocimiento de voz del móvil"]],
+       title:"Tú hablas en español", text:"Das la orden como siempre, en tu idioma. El sitio guardado ya sabe que en esa tienda se habla alemán."},
+      {screen:"review", lang:"de", nodes:["app","gemma"], tags:[["open","Gemma · open-weight"]],
+       title:"Esta vez quieres decidir tú", text:"Has dicho «pregúntame antes de cambiar», así que Gemma activa esa opción. Si no tienen la pieza, Laia te consultará.",
+       code:`{
+  "mode": "pedido",
+  "items": ["cambio trasero Shimano XT"],
+  "alternatives": [],
+  "max_price": 80,
+  "ask_before_alternative": true,
+  "notes": "envío a España"
+}`},
+      {screen:"call", status:"ringing", nodes:["twilio"], tags:[["paid","Twilio"]],
+       events:["Llamando a Radhaus Müller...","Sonando..."],
+       title:"Llamada internacional", text:"La misma tubería, otro idioma. Whisper y ElevenLabs se configuran en alemán para esta llamada."},
+      {screen:"call", status:"talk", nodes:["whisper","gemma","eleven"], tags:[["open","Whisper (de)"],["open","Gemma"],["paid","ElevenLabs (de)"]],
+       events:["Radhaus Müller ha contestado."],
+       add:[["neg","Radhaus Müller, guten Tag.","Radhaus Müller, buenos días."],["laia","Guten Tag, hier ist Laia, eine KI-Assistentin. Ich rufe für Marta aus Spanien an. Haben Sie das Shimano XT Schaltwerk?","Buenos días, soy Laia, una asistente de IA. Llamo de parte de Marta, desde España. ¿Tienen el cambio Shimano XT?"]],
+       title:"Habla alemán con el negocio", text:"Tú ves cada frase traducida al español. El negocio solo oye un alemán natural."},
+      {screen:"call", status:"wait", nodes:["gemma","rules","app"], tags:[["open","Gemma → item_unavailable()"],["rule","regla: preguntarte"]],
+       events:["No tienen: Shimano XT.","Laia te pregunta: No tienen el XT. Ofrecen el SLX por 58 €. ¿Lo pido?"],
+       add:[["neg","Das XT ist ausverkauft, aber wir haben das SLX für 58 Euro.","El XT está agotado, pero tenemos el SLX por 58 euros."],["laia","Einen Moment bitte, ich frage kurz nach.","Un momento, por favor, lo consulto enseguida."]],
+       question:"No tienen el XT. Ofrecen el SLX por 58 €. ¿Lo pido?",
+       title:"Laia te necesita", text:"Pide al negocio un momento y tu móvil vibra. Respondes con un toque, sin ponerte al teléfono. Pulsa «Sí» en el móvil para seguir.",
+       code:`ask_user("No tienen el XT. Ofrecen el SLX por 58 €. ¿Lo pido?")
+… esperando tu respuesta (máx. 90 s)`},
+      {screen:"call", status:"talk", nodes:["app","gemma","rules","eleven"], tags:[["open","Gemma → report_price()"],["rule","71 ≤ 80 €"]],
+       events:["Respondiste: Sí","El negocio dice que cuesta 71 EUR."],
+       add:[["laia","Ja, gerne das SLX. Was kostet es mit Versand nach Spanien?","Sí, el SLX, por favor. ¿Cuánto cuesta con envío a España?"],["neg","Mit Versand sind es 71 Euro.","Con envío son 71 euros."]],
+       title:"Tu respuesta vuelve a la llamada", text:"Laia continúa en alemán con tu decisión y comprueba que el total con envío no pasa de tu máximo."},
+      {screen:"call", status:"talk", nodes:["gemma","twilio"], tags:[["open","Gemma → order_confirmed()"]],
+       events:["¡Pedido hecho! Cambio Shimano SLX con envío a España.","Laia ha colgado."],
+       add:[["laia","Perfekt. Bitte schicken Sie den Zahlungslink an Martas E-Mail. Vielen Dank!","Perfecto. Por favor, envíen el enlace de pago al correo de Marta. ¡Muchas gracias!"],["neg","Machen wir. Wir versenden morgen.","Hecho. Lo enviamos mañana."]],
+       title:"Nunca da datos de tarjeta", text:"El pago se hace después y lo haces tú: con el repartidor o con un enlace que te mandan. Laia solo negocia y confirma."},
+      {screen:"done", nodes:["app"], tags:[["open","app"]], toast:"Laia · Pedido hecho en Radhaus Müller",
+       result:["Cambio trasero Shimano SLX","Total: 71 € con envío · te mandan el enlace de pago","Envío mañana desde Múnich"],
+       title:"Comprado en otro idioma, sin hablarlo", text:"La compra que antes no hacías por pereza, en dos minutos y desde el sofá."}
+    ]
+  }
+};
+
+let scen = "pizza", step = 0, timer = null, typeTimer = null;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function cumulative(S, i){
+  const ev=[], bub=[];
+  for(let k=0;k<=i;k++){ const st=S.steps[k];
+    if(st.screen==="call"||st.screen==="done"){ (st.events||[]).forEach(e=>ev.push(e)); (st.add||[]).forEach(b=>bub.push(b)); } }
+  return {ev,bub};
+}
+
+function chips(S, sel){
+  return `<div class="label">¿A dónde llamo?</div><div class="chips">${S.places.map(p=>`<span class="chip ${p===sel?'on':''}">${esc(p)}</span>`).join("")}<span class="chip">+ Añadir</span></div>`;
+}
+
+function renderScreen(){
+  const S=SCEN[scen], st=S.steps[step];
+  const sb=`<div class="statusbar"><span>21:04</span><span>5G ▮▮▮</span></div>`;
+  let head=`<div class="appbar"><b>Laia</b><small>Mis sitios · Ajustes</small></div>`, body="";
+  clearInterval(typeTimer);
+
+  if(st.screen==="home"){
+    body=`${chips(S,S.places[0])}<div class="mic">${ICON.mic}</div><div class="hint">Toca y dime qué quieres</div>
+      <div class="field"><small>Tu orden</small><div class="v" style="color:var(--muted)">Pide una pizza cuatro quesos…</div></div>
+      <div class="cta">Preparar pedido</div>`;
+  } else if(st.screen==="listen"){
+    body=`${chips(S,S.place)}<div class="mic live">${ICON.stop}</div><div class="hint">Te escucho...</div>
+      <div class="field"><small>Tu orden</small><div class="v" id="typed"></div></div><div class="cta">Preparar pedido</div>`;
+  } else if(st.screen==="review"){
+    head=`<div class="appbar"><b style="font-size:18px">← Revisa el pedido</b></div>`;
+    const lang = st.lang==="de" ? "alemán" : "español";
+    const isDe = scen==="de";
+    body=`<div class="field" style="background:var(--accent-soft);border-color:transparent"><small>Laia llamará a</small><div class="v"><b>${esc(S.place)}</b> · hablará en ${lang}</div></div>
+      <div class="field"><small>Qué pedir</small><div class="v">${isDe?"Cambio trasero Shimano XT":"Pizza cuatro quesos"}</div></div>
+      <div class="field"><small>Si no hay, pide…</small><div class="v">${isDe?"<span style='color:var(--muted)'>Pregúntame antes</span>":"Margarita"}</div></div>
+      <div class="field"><small>Precio máximo</small><div class="v">${isDe?"80 €":"20 €"}</div></div>
+      <div class="field"><small>Entrega</small><div class="v">Calle Mayor 12, 3ºB · ${isDe?"pago por enlace":"pago al repartidor"}</div></div>
+      <div class="cta">Llamar ahora</div>`;
+  } else if(st.screen==="call"||st.screen==="done"){
+    const {ev,bub}=cumulative(S,step);
+    head=`<div class="appbar"><b style="font-size:18px">← ${esc(S.place)}</b></div>`;
+    const done=st.screen==="done";
+    const [ic,lab,cls] = done?[ICON.check,"¡Hecho!","ok"] : st.status==="ringing"?[ICON.ring,"Llamando...",""] : st.status==="wait"?[ICON.bell,"Laia te necesita",""] : [ICON.ring,"Laia está hablando",""];
+    body=`<div class="callhead"><div class="ic ${cls}">${ic}</div><div><h3>${lab}</h3><p>${scen==="de"?"Shimano XT · en alemán":"Pizza cuatro quesos"}</p></div></div>`;
+    if(st.question) body+=`<div class="qcard"><b>${esc(st.question)}</b><div class="qrow"><button id="yes">Sí</button><button class="no" id="no">No</button></div></div>`;
+    if(done) body+=`<div class="result"><b>${esc(st.result[0])}</b>${st.result.slice(1).map(r=>`<span>${esc(r)}</span>`).join("")}</div>`;
+    body+=`<div class="label">Lo que va pasando</div><div class="events">${ev.map(e=>`<div>${esc(e)}</div>`).join("")}</div>`;
+    if(bub.length) body+=`<div class="label">La conversación</div><div class="bubbles">${bub.map(([w,t,tr])=>`<div class="b ${w}"><em>${w==="laia"?"Laia":"Negocio"}</em>${esc(t)}${tr?`<span class="tr">${esc(tr)}</span>`:""}</div>`).join("")}</div>`;
+    if(done) body+=`<div class="cta ghost">Listo</div>`;
+  }
+
+  $("screen").innerHTML = sb+head+`<div class="body" id="pbody">${body}</div>`+(st.toast?`<div class="toast">${ICON.bell}<span><i>${esc(st.toast.split(" · ")[0])}</i> · ${esc(st.toast.split(" · ")[1])}</span></div>`:"");
+  const pb=$("pbody"); if(st.screen==="call") pb.scrollTop=pb.scrollHeight;
+
+  if(st.typed){
+    const el=$("typed"), full="Oye Laia, "+S.command.charAt(0).toLowerCase()+S.command.slice(1);
+    if(matchMedia("(prefers-reduced-motion: reduce)").matches){ el.textContent=full; }
+    else { let n=0; typeTimer=setInterval(()=>{ n+=2; el.innerHTML=esc(full.slice(0,n))+'<span class="caret"></span>'; if(n>=full.length){ clearInterval(typeTimer); el.textContent=full; } },35); }
+  }
+  const y=$("yes"), no=$("no");
+  if(y) y.onclick=()=>go(1);
+  if(no) no.onclick=()=>{ no.textContent="(en la demo, elige Sí)"; };
+}
+
+function renderSide(){
+  const S=SCEN[scen], st=S.steps[step];
+  $("tags").innerHTML=st.tags.map(([k,t])=>`<span class="tag ${k}">${esc(t)}</span>`).join("");
+  $("now-title").textContent=st.title; $("now-text").textContent=st.text;
+  const c=$("now-code"); c.hidden=!st.code; c.textContent=st.code||"";
+  $("flow").innerHTML=NODES.map(([k,t],i)=>`${i?'<span class="arrow">→</span>':""}<span class="node ${st.nodes.includes(k)?'hot':''}">${t}</span>`).join("");
+  $("dots").innerHTML=S.steps.map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join("");
+  $("counter").textContent=`Paso ${step+1} de ${S.steps.length}`;
+  $("prev").disabled=step===0; $("next").disabled=step===S.steps.length-1;
+}
+
+function render(){ renderScreen(); renderSide(); }
+function go(d){ const n=SCEN[scen].steps.length; step=Math.max(0,Math.min(n-1,step+d)); render(); if(step===n-1) stop(); }
+function stop(){ clearInterval(timer); timer=null; $("play").textContent="▶ Reproducir"; }
+function play(){
+  if(timer){ stop(); return; }
+  if(step===SCEN[scen].steps.length-1){ step=0; render(); }
+  $("play").textContent="❚❚ Pausa";
+  timer=setInterval(()=>go(1), 4200);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  scen=b.dataset.s; step=0; stop();
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false"));
+  render();
+});
+$("prev").onclick=()=>{ stop(); go(-1); };
+$("next").onclick=()=>{ stop(); go(1); };
+$("play").onclick=play;
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight"){stop();go(1);} if(e.key==="ArrowLeft"){stop();go(-1);} });
+render();
+</script>
