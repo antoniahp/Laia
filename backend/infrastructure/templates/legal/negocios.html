@@ -1,0 +1,20 @@
+{% extends "legal/base.html" %}
+{% block title %}Para negocios{% endblock %}
+{% block content %}
+<h1>¿Te ha llamado Laia?</h1>
+<p class="meta">Información para los negocios que reciben llamadas</p>
+
+<p>Laia es una asistente de inteligencia artificial. Te ha llamado <strong>de parte de un cliente</strong> para hacer un pedido o una consulta,
+igual que lo haría él por teléfono. Siempre se presenta como IA. El cliente puede escuchar la conversación en directo desde su móvil, como si estuviera a su lado.</p>
+
+<h2>Qué hacemos con la llamada</h2>
+<ul>
+  <li>El audio se procesa en tiempo real para entender y responder. <strong>No se graba.</strong></li>
+  <li>Se transcribe lo que se dice para que el cliente vea su pedido. La transcripción se borra a los {{ retention_days }} días.</li>
+  <li>El cliente paga directamente al negocio, como siempre. Laia nunca da ni pide datos de tarjeta.</li>
+</ul>
+
+<h2>Si no quieres recibir llamadas de Laia</h2>
+<p>Escríbenos a <a href="mailto:{{ email }}">{{ email }}</a> con el teléfono del negocio y lo quitaremos de la lista: Laia no volverá a llamarte.
+También puedes ejercer tus derechos de privacidad en esa dirección.</p>
+{% endblock %}

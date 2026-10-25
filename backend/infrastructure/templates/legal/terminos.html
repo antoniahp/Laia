@@ -1,0 +1,53 @@
+{% extends "legal/base.html" %}
+{% block title %}Condiciones de uso{% endblock %}
+{% block content %}
+<h1>Condiciones de uso</h1>
+<p class="meta">Versión {{ version }} · Servicio ofrecido por {{ owner }} · <a href="mailto:{{ email }}">{{ email }}</a></p>
+
+<div class="box">Laia es una asistente de inteligencia artificial que llama por teléfono a negocios en tu nombre para hacer pedidos o consultas.
+Puede equivocarse: revisa siempre el resultado.</div>
+
+<h2>1. Qué hace Laia</h2>
+<p>Le dices qué quieres y a qué negocio llamar. Laia llama, se presenta como asistente de IA que llama de tu parte, sigue tus reglas (alternativas, precio máximo) y te pregunta cuando algo no está claro.
+Puedes escuchar la llamada en directo y pedir que te la pase para hablar tú.</p>
+
+<h2>2. Requisitos</h2>
+<ul>
+  <li>Ser mayor de 18 años.</li>
+  <li>Dar datos reales: Laia los usa para hacer el pedido (nombre, dirección, teléfono).</li>
+  <li>Proteger tu contraseña. Lo que se haga con tu cuenta es responsabilidad tuya.</li>
+</ul>
+
+<h2>3. Uso permitido</h2>
+<p>Solo para pedidos y consultas reales a negocios. Está prohibido usar Laia para:</p>
+<ul>
+  <li>Llamadas comerciales, publicitarias o de captación.</li>
+  <li>Bromas, acoso, amenazas o llamadas a particulares.</li>
+  <li>Engañar al negocio, suplantar a otra persona u ocultar que es una IA.</li>
+  <li>Pedidos que no piensas recoger o pagar.</li>
+</ul>
+<p>Por seguridad, Laia solo llama a negocios verificados, nunca a números de tarificación especial, y tiene un límite de llamadas diarias.
+Podemos suspender cuentas que incumplan estas normas.</p>
+
+<h2>4. Pagos</h2>
+<p>Laia no paga ni pide datos de tarjeta. Pagas tú directamente al negocio: en la entrega o con el enlace que te envíe.
+El precio final lo fija el negocio. El precio máximo que indicas es una regla para Laia, no una garantía de precio.</p>
+
+<h2>5. Responsabilidad</h2>
+<ul>
+  <li>Laia es un servicio en pruebas y puede equivocarse: entender mal, no conseguir el pedido o hacerlo distinto de lo que esperabas. Revisa el resumen y la conversación.</li>
+  <li>El contrato de compra es entre tú y el negocio. Las incidencias con el producto o el envío se resuelven con el negocio.</li>
+  <li>No respondemos de daños indirectos ni de lo que dependa de terceros (telefonía, negocios, proveedores). Nada de esto limita los derechos que te da la ley de consumidores.</li>
+</ul>
+
+<h2>6. Google Maps</h2>
+<p>Laia busca negocios con Google Maps. Al usar esta función aceptas también las
+<a href="https://maps.google.com/help/terms_maps/">Condiciones adicionales de Google Maps</a> y la
+<a href="https://policies.google.com/privacy">Política de privacidad de Google</a>.</p>
+
+<h2>7. Baja</h2>
+<p>Puedes borrar tu cuenta cuando quieras desde la app (Perfil → Borrar mi cuenta).</p>
+
+<h2>8. Cambios y ley aplicable</h2>
+<p>Si cambiamos estas condiciones te avisaremos en la app. Se rigen por la ley española. Si eres consumidor, puedes reclamar en los tribunales de tu domicilio.</p>
+{% endblock %}

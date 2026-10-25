@@ -1,0 +1,66 @@
+{% extends "legal/base.html" %}
+{% block title %}Política de privacidad{% endblock %}
+{% block content %}
+<h1>Política de privacidad</h1>
+<p class="meta">Versión {{ version }} · Aplicable a la app y al servicio Laia</p>
+
+<div class="box">En corto: Laia llama a negocios por ti. Para eso trata tus datos de cuenta, lo que pides y la conversación de cada llamada.
+No grabamos el audio de las llamadas, no vendemos tus datos y borramos las conversaciones a los {{ retention_days }} días.</div>
+
+<h2>1. Quién es responsable</h2>
+<p>{{ owner }} (en adelante, «Laia»). Contacto para cualquier tema de privacidad: <a href="mailto:{{ email }}">{{ email }}</a>.</p>
+
+<h2>2. Qué datos tratamos y para qué</h2>
+<table>
+  <tr><th>Datos</th><th>Para qué</th><th>Base legal (RGPD)</th></tr>
+  <tr><td>Email y contraseña (cifrada)</td><td>Crear y proteger tu cuenta</td><td>Ejecución del contrato (art. 6.1.b)</td></tr>
+  <tr><td>Nombre, dirección de entrega y teléfono</td><td>Que Laia pueda hacer el pedido en tu nombre y, si lo pides, pasarte la llamada</td><td>Ejecución del contrato (art. 6.1.b)</td></tr>
+  <tr><td>Tus órdenes (qué pedir, alternativas, precio máximo, notas)</td><td>Hacer la llamada siguiendo tus reglas</td><td>Ejecución del contrato (art. 6.1.b)</td></tr>
+  <tr><td>Transcripción y resumen de cada llamada</td><td>Enseñarte la llamada en directo y el resultado</td><td>Ejecución del contrato (art. 6.1.b)</td></tr>
+  <tr><td>Identificador de tu chat de Telegram (si lo conectas)</td><td>Avisarte y preguntarte dudas durante la llamada</td><td>Tu consentimiento al conectarlo (art. 6.1.a), que puedes retirar cuando quieras</td></tr>
+  <tr><td>Registros técnicos y número de llamadas al día</td><td>Seguridad y evitar abusos (por ejemplo, llamadas no deseadas a terceros)</td><td>Interés legítimo (art. 6.1.f)</td></tr>
+</table>
+<p>El <strong>audio</strong> de las llamadas se procesa en tiempo real para que Laia entienda y hable, y para que tú puedas escucharla en directo. <strong>No se graba ni se guarda.</strong></p>
+<p>No tomamos decisiones automatizadas con efectos jurídicos sobre ti. Las decisiones de dinero (precio máximo, alternativas) las aplica Laia siguiendo exactamente las reglas que tú le das.</p>
+
+<h2>3. Datos de los negocios a los que llama Laia</h2>
+<p>Durante la llamada se procesa la voz de la persona que atiende el teléfono y se transcribe lo que dice, solo para gestionar tu pedido.
+Laia se presenta siempre como inteligencia artificial. Tú puedes escuchar la conversación en directo desde la app. Más información en <a href="/legal/negocios/">Para negocios</a>.</p>
+
+<h2>4. Con quién se comparten (encargados del tratamiento)</h2>
+<table>
+  <tr><th>Proveedor</th><th>Para qué</th></tr>
+  <tr><td>Twilio</td><td>Hacer la llamada telefónica</td></tr>
+  <tr><td>ElevenLabs</td><td>Poner voz a Laia{% if stt_elevenlabs %} y transcribir la llamada{% endif %}</td></tr>
+  <tr><td>Ollama (modelo abierto Gemma)</td><td>Entender tu orden, decidir qué decir y traducir</td></tr>
+  <tr><td>Google (Google Maps Platform)</td><td>Buscar el negocio y su teléfono</td></tr>
+  <tr><td>Render</td><td>Alojar el servidor y la base de datos</td></tr>
+  <tr><td>Telegram</td><td>Solo si lo conectas: enviarte avisos</td></tr>
+</table>
+<p>Algunos de estos proveedores están en Estados Unidos. Las transferencias se hacen con las garantías del RGPD (Marco de Privacidad de Datos UE-EE. UU. o cláusulas contractuales tipo de la Comisión Europea).
+No vendemos ni cedemos tus datos para publicidad.</p>
+
+<h2>5. Cuánto tiempo los guardamos</h2>
+<ul>
+  <li>Transcripción y registro de cada llamada: {{ retention_days }} días. Después solo queda el resultado (por ejemplo, «Pizza margarita, 11,50 €»).</li>
+  <li>Tu cuenta y tu historial de pedidos: mientras tengas la cuenta. Si la borras, se borra todo al momento.</li>
+  <li>Audio: nunca se guarda.</li>
+</ul>
+
+<h2>6. Tus derechos</h2>
+<p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad:</p>
+<ul>
+  <li>Desde la app: <strong>Perfil → Descargar mis datos</strong> y <strong>Perfil → Borrar mi cuenta</strong>.</li>
+  <li>Escribiendo a <a href="mailto:{{ email }}">{{ email }}</a>.</li>
+</ul>
+<p>Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es">aepd.es</a>).</p>
+
+<h2>7. Edad mínima</h2>
+<p>Laia es para mayores de 18 años, porque hace pedidos y compras en tu nombre.</p>
+
+<h2>8. Seguridad</h2>
+<p>Contraseñas cifradas, conexiones cifradas (HTTPS), verificación de la firma de la compañía telefónica, un secreto distinto en cada llamada y acceso a cada pedido solo por su dueño.</p>
+
+<h2>9. Cambios</h2>
+<p>Si cambiamos esta política de forma importante te avisaremos en la app y te pediremos que la aceptes de nuevo.</p>
+{% endblock %}
